@@ -133,8 +133,8 @@ export class MockApi implements Api {
     if (/humano|persona|agente/.test(last)) reply = `Claro, te paso con una persona del equipo ahora mismo. Ya le envié un resumen de lo que hablamos para que no repitas nada. Horario de atención humana: ${dm.escalation.hours}.`;
     else if (/domicilio|env[ií]o/.test(last)) reply = "Por ahora no hacemos entregas a domicilio; todos los pedidos se recogen en sucursal. 🙂 ¿Te queda cerca Roma, Condesa, Del Valle o Coyoacán?  ⟶ [Regla dura #1 aplicada]";
     else if (/pastel/.test(last)) reply = `¡Con gusto! 🎂 Los pasteles personalizados los preparamos con ${dm.hard_rules[1].match(/\d+/)?.[0] ?? "48"} horas de anticipación. ¿Para cuántas personas y qué sabor te gustaría?  ⟶ [Fuente: Política de pedidos y pasteles.pdf]`;
-    else if (/precio|cuesta|concha/.test(last)) reply = "La concha cuesta $18, el cuernito $22 y la rebanada de pastel $65. ¿Te aparto algo para recoger?  ⟶ [Fuente: Menú y precios septiembre 2026.xlsx]";
     else if (/aler|nuez|gluten/.test(last)) reply = "Para alergias prefiero que te lo confirmen directamente en la sucursal, donde revisan los ingredientes del día; no quiero darte un dato incorrecto. ¿Te paso con una persona?  ⟶ [Regla dura #3 aplicada]";
+    else if (/precio|cuesta|concha/.test(last)) reply = "La concha cuesta $18, el cuernito $22 y la rebanada de pastel $65. ¿Te aparto algo para recoger?  ⟶ [Fuente: Menú y precios septiembre 2026.xlsx]";
     else if (/hora|abren|cierran/.test(last)) reply = "Abrimos de 7:00 a 21:00 todos los días en nuestras 4 sucursales. 🥐  ⟶ [Fuente: laespiga.mx/sucursales]";
     else reply = `Soy ${dm.identity.name}, ${dm.identity.persona} de ${dm.identity.company}. Puedo ayudarte con ${dm.scope.in.slice(0, 3).join(", ")}. ¿Qué necesitas?  ⟶ [Sin fuente: pregunta guardada en "sin respuesta"]`;
     const words = reply.split(" ");

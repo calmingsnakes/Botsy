@@ -1,4 +1,5 @@
 import type * as T from "../lib/types";
+import { BRAND } from "../brand";
 
 // Deterministic pseudo-random so the demo looks the same on every load.
 let seed = 42;
@@ -174,7 +175,7 @@ export const AUDIT: T.AuditEntry[] = [
   { id: 5, actor: "Luis Herrera", actor_type: "user", action: "member.invite", object_type: "member", object_id: "usr_cont", details: { role: "viewer" }, ip: "201.141.5.22", created_at: daysAgo(20) },
   { id: 6, actor: "Ana Rodríguez", actor_type: "user", action: "conversation.export", object_type: "conversation", object_id: "conv_004", details: { sha256: "3f9a…c21e" }, ip: "189.203.1.10", created_at: daysAgo(3) },
   { id: 7, actor: "Ana Rodríguez", actor_type: "user", action: "api_key.create", object_type: "api_key", object_id: "key_web", details: { scopes: ["chat"] }, ip: "189.203.1.10", created_at: daysAgo(40) },
-  { id: 8, actor: "soporte@{{BRAND}}", actor_type: "platform_admin", action: "support.access", object_type: "org", details: { reason: "Ticket #231: revisar indexación fallida", notified_owner: true }, created_at: daysAgo(1) },
+  { id: 8, actor: `soporte@${BRAND.toLowerCase()}`, actor_type: "platform_admin", action: "support.access", object_type: "org", details: { reason: "Ticket #231: revisar indexación fallida", notified_owner: true }, created_at: daysAgo(1) },
 ];
 
 export const INVOICES: T.Invoice[] = [
