@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%279%27 fill=%27%23e5007e%27/%3E%3C/svg%3E" />
+  <title>BRAND · Agentes de IA en español para tu negocio</title>
+  <meta name="description" content="Servicio administrado de asistentes de IA en español natural para atención a clientes, leads, entrenamiento de personal y simulacros de emergencia. Diseñado para la ley mexicana." />
+  <link rel="stylesheet" href="/landing/landing.css" />
+</head>
+<body>
+<!--
+  Estructura basada en el análisis de landings de Sierra, Decagon, Fin (Intercom), Ada y Yalo (Botsy-docs/docs/compendio/09-marketing.md §2):
+  nav · hero con demo viva · franja de confianza · cómo funciona (3 pasos) · Documento Maestro + Agente de Cambios (firma)
+  · servicios por persona · Rayos X · casos demostrativos (honestos) · seguridad y cumplimiento · precios · FAQ · CTA · footer legal.
+-->
+<header class="nav">
+  <a class="logo" href="#"><span class="mark" aria-hidden></span><span data-brand>BRAND</span></a>
+  <nav aria-label="Secciones">
+    <a href="#como">Cómo funciona</a><a href="#servicios">Servicios</a><a href="#seguridad">Seguridad</a><a href="#precios">Precios</a><a href="#faq">Preguntas</a>
+  </nav>
+  <div class="nav-cta"><a class="btn ghost" href="app/">Entrar</a><a class="btn accent" href="#piloto">Agenda un piloto</a></div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Servicio administrado de agentes de IA · México y LatAm</p>
+      <h1>Habla con tus clientes <em>como si estuvieras ahí.</em></h1>
+      <p class="lede">Asistentes de IA que atienden, venden y entrenan en español natural —con acento de aquí— y que tú ajustas con una frase: <q>ya cambió la norma, actualízala</q>. Nada se publica sin tu aprobación. Siempre hay un humano a un mensaje de distancia.</p>
+      <div class="cta-row"><a class="btn accent lg" href="#piloto">Agenda un piloto de 30 días</a><a class="btn ghost lg" href="#demo">Pruébalo ahora ↓</a></div>
+      <ul class="proof">
+        <li><b data-counter>0</b> conversaciones atendidas desde el lanzamiento (contador real: demos + nuestro propio soporte)</li>
+        <li>Diseñado para la <b>LFPDPPP 2025</b> y PROFECO · aviso de privacidad listo para pegar</li>
+      </ul>
+    </div>
+    <div class="hero-demo" id="demo">
+      <div class="demo-tabs" role="tablist" aria-label="Bots de demostración"></div>
+      <div class="chat" aria-live="polite">
+        <div class="msgs" id="msgs"></div>
+        <div class="starters" id="starters"></div>
+        <form id="chat-form"><input id="chat-input" autocomplete="off" placeholder="Escribe como si fueras el cliente…" aria-label="Mensaje" /><button class="btn accent" type="submit">Enviar</button></form>
+      </div>
+      <p class="demo-note" id="demo-note">Demostración pública con documentación de ejemplo. 8 mensajes por sesión.</p>
+    </div>
+  </section>
+
+  <section class="strip" aria-label="Confianza">
+    <span>Español natural (es-MX y variantes LatAm)</span><span>Aislamiento por cliente a nivel base de datos</span><span>Ningún proveedor entrena con tus datos</span><span>Cancelas cuando quieras</span><span>Garantía de 30 días</span>
+  </section>
+
+  <section class="section" id="como">
+    <h2>Tan fácil que lo configura quien atiende el mostrador</h2>
+    <p class="sub">Tres pasos. Sin prompts, sin flujos, sin programar.</p>
+    <div class="steps">
+      <article><h3>Elige el servicio</h3><p>Recepcionista 24/7, soporte por correo, calificador de leads, entrenador de brigadas… Cada uno llega pre-configurado con su <b>Documento Maestro</b> y su reporte.</p></article>
+      <article><h3>Arrastra tus documentos</h3><p>Menú, políticas, manuales, ligas. El bot te dice <b>qué aprendió</b> y qué preguntas ya puede contestar. Si un archivo no sirve, te dice por qué y qué hacer.</p></article>
+      <article><h3>Aprueba y conecta</h3><p>Pruébalo en el simulador, conecta web, WhatsApp, correo o teléfono, y recibe cada lunes tu <b>Rayos X</b> de lo que preguntan tus clientes.</p></article>
+    </div>
+  </section>
+
+  <section class="section dm" id="dm">
+    <div class="dm-copy">
+      <p class="eyebrow">La columna vertebral</p>
+      <h2>Un Documento Maestro por bot. Lo cambias con tus palabras.</h2>
+      <p>Es el manual de operación de tu asistente: qué atiende, qué no, cómo habla, qué nunca dice y cuándo pasa a una persona. Está versionado y cada cambio queda registrado con quién, cuándo y por qué.</p>
+      <p>Escribe <q>ya cambió la política de devoluciones: ahora son 30 días</q> y el <b>Agente de Cambios</b> te propone exactamente qué modificar —en el documento y en tus archivos— para que apruebes con un clic.</p>
+      <a class="btn ghost" href="app/#/bots/bot_recepcion">Ver el editor en la demo →</a>
+    </div>
+    <div class="dm-demo" id="dm-demo">
+      <div class="dm-instruction"><span class="who">Tú</span><span id="dm-typed"></span><span class="caret" aria-hidden></span></div>
+      <div class="dm-diff" id="dm-diff" hidden>
+        <div class="head">Propuesta · Documento Maestro · reglas duras</div>
+        <div class="body"><div class="before">Solo acepta devoluciones dentro de <mark>15 días</mark> con ticket.</div><div class="after">Solo acepta devoluciones dentro de <mark>30 días</mark> con ticket.</div></div>
+        <div class="head">Propuesta · Política de devoluciones.pdf</div>
+        <div class="body"><div class="before">Plazo para devolver: <mark>15 días</mark> naturales.</div><div class="after">Plazo para devolver: <mark>30 días</mark> naturales.</div></div>
+        <div class="actions"><button class="btn accent" id="dm-approve">Publicar 2 cambios</button><span class="note">Se crea la versión 8 · puedes regresar a la 7 en un clic</span></div>
+      </div>
+      <div class="dm-done" id="dm-done" hidden>✓ Publicado como versión 8. Web, WhatsApp y correo ya responden con el nuevo plazo.</div>
+    </div>
+  </section>
+
+  <section class="section" id="servicios">
+    <h2>Un servicio para cada dolor</h2>
+    <p class="sub">Veinte servicios pre-configurados. Empieza con uno; los demás heredan lo que el bot ya sabe de tu negocio.</p>
+    <div class="persona-tabs" role="tablist">
+      <button class="active" data-p="p1">Dueño de negocio</button><button data-p="p2">Atención a clientes</button><button data-p="p3">Recursos humanos</button><button data-p="p4">Seguridad y protección civil</button>
+    </div>
+    <div class="services" id="services"></div>
+  </section>
+
+  <section class="section xray">
+    <div class="xray-copy">
+      <p class="eyebrow">Por qué se quedan nuestros clientes</p>
+      <h2>No es un bot. Es saber, cada mes, qué les pasa a tus clientes.</h2>
+      <p>Cada conversación deja un dato: tema, resultado, sentimiento, si el bot supo o no. Con eso te entregamos un <b>Rayos X</b> con hallazgos y recomendaciones, y un KPI acordado contigo con reporte automático.</p>
+      <ul class="checks"><li>Temas más preguntados y dónde se frustran</li><li>Preguntas sin respuesta: contéstalas y el bot aprende</li><li>KPI del servicio (p. ej. resolución sin humano ≥ 60 %)</li><li>Alertas útiles: cliente molesto, tema nuevo, presupuesto al 80 %</li></ul>
+    </div>
+    <div class="xray-card">
+      <div class="xray-head">Rayos X · septiembre · Panadería La Espiga (ejemplo)</div>
+      <div class="hbar"><span>horarios</span><div class="track"><i style="width:100%"></i></div><span>412</span></div>
+      <div class="hbar"><span>precios</span><div class="track"><i style="width:94%"></i></div><span>388</span></div>
+      <div class="hbar"><span>pasteles personalizados</span><div class="track"><i style="width:73%"></i></div><span>301</span></div>
+      <div class="hbar"><span>entrega a domicilio</span><div class="track"><i class="neg" style="width:48%"></i></div><span>198</span></div>
+      <div class="hbar"><span>devolución</span><div class="track"><i class="neg" style="width:20%"></i></div><span>84</span></div>
+      <p class="insight">198 clientes pidieron entrega a domicilio y no la ofreces. El 22 % se fue molesto. ¿Vale la pena una alianza con una app de entregas?</p>
+    </div>
+  </section>
+
+  <section class="section" id="casos">
+    <h2>Compruébalo tú, sin logos prestados</h2>
+    <p class="sub">Estamos arrancando. En vez de testimonios inventados, te damos tres demostraciones reproducibles y nuestras propias métricas. Los casos con nombre llegarán con los primeros pilotos.</p>
+    <div class="cases">
+      <article><span class="tag">Demostración</span><h3>Soporte de software · Nube Contable</h3><p>Manual de 40 páginas, políticas de facturación. Responde con fuente, escala cancelaciones con resumen y nunca promete reembolsos.</p><button class="btn ghost sm" data-open-demo="nube-contable">Probar ↑</button></article>
+      <article><span class="tag">Demostración</span><h3>Postventa · Foco Films</h3><p>Tres días después de entregar un comercial, pide retroalimentación conversacional, detecta molestia y agenda con el productor.</p><button class="btn ghost sm" data-open-demo="foco-films">Probar ↑</button></article>
+      <article><span class="tag">Demostración</span><h3>Brigadas · Planta Norte</h3><p>Entrena con la NOM-002-STPS-2010 y el plan interno: cuestionarios, simulacro guiado, registro de práctica. No sustituye la DC-3, y lo dice.</p><button class="btn ghost sm" data-open-demo="planta-norte">Probar ↑</button></article>
+      <article class="own"><span class="tag">Caso real</span><h3>Nuestro propio soporte</h3><p>Esta página, nuestro soporte y el onboarding corren con la misma plataforma. Métricas públicas y sin maquillar: <b data-counter>0</b> conversaciones atendidas.</p></article>
+    </div>
+  </section>
+
+  <section class="section security" id="seguridad">
+    <h2>Seguridad y cumplimiento, sin letra chiquita</h2>
+    <div class="sec-grid">
+      <div><h3>Tus datos, aislados</h3><p>Cada cliente vive en su propio espacio a nivel base de datos (RLS), cifrado en reposo y en tránsito. Acceso con verificación en dos pasos. Todo acceso nuestro queda en tu auditoría, con motivo y notificación.</p></div>
+      <div><h3>Ley mexicana por diseño</h3><p>LFPDPPP 2025: aviso de privacidad por canal, módulo de solicitudes ARCO, retención configurable, contrato de encargo. PROFECO/REPEP: sin marketing saliente sin consentimiento. CONDUSEF: reglas de cobranza en código, no solo en el prompt.</p></div>
+      <div><h3>La IA se identifica</h3><p>Todo bot dice que es IA, ofrece humano en cualquier momento y nunca toma decisiones con efecto legal. Estas reglas no se pueden quitar. Ningún proveedor de modelos entrena con tus datos.</p></div>
+      <div><h3>Lo que aún no tenemos</h3><p>Certificación SOC 2 (en roadmap 2027) y SSO empresarial (plan Corporativo). Preferimos decírtelo a prometerlo.</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="precios">
+    <h2>Precios en pesos, sin sorpresas</h2>
+    <p class="sub">Conversaciones incluidas, excedentes claros, alertas al 80 %. Sin prueba gratis: piloto pagado de 30 días con <b>garantía de devolución del 100 %</b>. Acompañamiento humano incluido.</p>
+    <div class="plans">
+      <article><h3>Inicio</h3><div class="price">$1,490<span>/mes + IVA</span></div><p>600 conversaciones · 1 servicio · 1 canal · 3 usuarios · Rayos X básico</p><a class="btn ghost" href="#piloto">Empezar</a></article>
+      <article class="hl"><h3>Crecimiento</h3><div class="price">$6,990<span>/mes + IVA</span></div><p>3,000 conversaciones · hasta 3 servicios · 3 canales · 10 usuarios · reporte semanal · Agente de Cambios ilimitado</p><a class="btn accent" href="#piloto">Empezar</a></article>
+      <article><h3>Equipo</h3><div class="price">$9,990<span>/mes + IVA</span></div><p>100 empleados · 2 servicios de entrenamiento · evidencia exportable · 10 usuarios</p><a class="btn ghost" href="#piloto">Empezar</a></article>
+      <article><h3>Corporativo</h3><div class="price">desde $24,990<span>/mes + IVA</span></div><p>15,000 conversaciones · SSO, DPA, retención a medida · gerente de cuenta · SLA 99.5 %</p><a class="btn ghost" href="#piloto">Hablemos</a></article>
+    </div>
+    <p class="fine">Excedente MXN 1.90–3.50 por conversación (solo si lo activas). Usuarios adicionales MXN 149/mes. Minutos de voz al costo + 40 %. Los reportes de entrenamiento son evidencia complementaria: no sustituyen la capacitación obligatoria ni la constancia DC-3.</p>
+  </section>
+
+  <section class="section faq" id="faq">
+    <h2>Preguntas frecuentes</h2>
+    <details><summary>¿Y si el bot le dice algo incorrecto a mi cliente?</summary><p>Solo responde con tus documentos y tus reglas; cuando no sabe, lo dice y ofrece humano. Cada respuesta muestra su fuente. Las preguntas sin respuesta llegan a una lista donde tú contestas en un clic y el bot aprende.</p></details>
+    <details><summary>¿Cuánto tarda en estar listo?</summary><p>Diez minutos para probarlo con tus documentos; uno a tres días para conectarlo a tu canal real con nuestra sesión de implementación de 30 minutos.</p></details>
+    <details><summary>¿Puede atender por teléfono?</summary><p>Sí, con voz natural en español. Anuncia que es IA y que la llamada puede grabarse, como exige la ley. Los minutos se cobran aparte.</p></details>
+    <details><summary>¿Necesito avisar a mis clientes que hablan con IA?</summary><p>Sí, y lo hacemos por ti: el primer mensaje siempre lo dice y enlaza tu aviso de privacidad. Te generamos el aviso simplificado para cada canal.</p></details>
+    <details><summary>¿Qué pasa con mis datos si cancelo?</summary><p>Puedes exportar todo (bots, documentos, conversaciones, auditoría) durante 30 días. Después se borran con certificado.</p></details>
+    <details><summary>¿Los bots de entrenamiento certifican a mi personal?</summary><p>No. Entrenan, evalúan y documentan la práctica. La constancia DC-3 solo la emite un agente capacitador registrado ante la STPS. Nuestros reportes son evidencia complementaria.</p></details>
+  </section>
+
+  <section class="section cta" id="piloto">
+    <h2>Empecemos con un piloto de 30 días</h2>
+    <p class="sub">Un servicio, un canal, un KPI. Si no te sirve, te devolvemos todo.</p>
+    <form class="pilot-form" id="pilot-form">
+      <input placeholder="Tu nombre" required aria-label="Nombre" /><input type="email" placeholder="Correo de trabajo" required aria-label="Correo" /><input placeholder="Empresa" aria-label="Empresa" />
+      <select aria-label="Qué necesitas"><option>Atención a clientes</option><option>Captación de leads</option><option>Entrenamiento de personal</option><option>Brigadas y simulacros</option><option>Otro</option></select>
+      <button class="btn accent lg" type="submit">Quiero mi piloto</button>
+    </form>
+    <p class="fine">Te contesta una persona en menos de 4 horas hábiles. Aviso de privacidad: usamos estos datos solo para contactarte.</p>
+  </section>
+</main>
+
+<footer class="foot">
+  <div><b data-brand>BRAND</b> · Servicio administrado de agentes de IA en español · Ciudad de México</div>
+  <div>Nuestros asistentes no brindan asesoría médica, legal ni financiera; informan y canalizan a profesionales. Precios en MXN sin IVA. <a href="#">Aviso de privacidad</a> · <a href="#">Términos</a> · <a href="#">Centro de confianza</a> · <a href="app/">Panel de cliente (demo)</a></div>
+</footer>
+
+<script type="module" src="/landing/landing.js"></script>
+</body>
+</html>
