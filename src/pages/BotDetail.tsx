@@ -115,7 +115,7 @@ function DmEditor({ bot, onPublished }: { bot: Bot; onPublished: () => void }) {
   async function save() { await api.saveMasterDocument(bot.id, draft!); setDirty(false); toast("Borrador guardado. Aún no está publicado."); }
   async function publish() { const v = await api.publish(bot.id, "Edición manual del Documento Maestro"); toast(`Publicada la versión ${v}.`); reload(); onPublished(); }
   return (
-    <div className="grid" style={{ gridTemplateColumns: "1fr 320px" }}>
+    <div className="grid split-r">
       <div className="dm-doc">
         <h4>Identidad</h4>
         <div className="row"><input value={draft.identity.name} onChange={(e) => set((d) => (d.identity.name = e.target.value))} aria-label="Nombre" /><input value={draft.identity.persona} onChange={(e) => set((d) => (d.identity.persona = e.target.value))} aria-label="Rol" /></div>
@@ -226,7 +226,7 @@ function Simulator({ bot }: { bot: Bot }) {
     } finally { setBusy(false); }
   }
   return (
-    <div className="grid" style={{ gridTemplateColumns: "1fr 300px" }}>
+    <div className="grid split-r">
       <div className="chat">
         <div className="msgs" ref={box}>
           {msgs.map((m, i) => {

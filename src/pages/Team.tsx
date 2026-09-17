@@ -15,7 +15,7 @@ export function Team() {
   return (
     <>
       <div className="page-head"><div><h1>Equipo y roles</h1><p>Tu plan incluye {included} usuarios; los adicionales cuestan MXN 149 al mes. Propietarios y administradores deben tener verificación en dos pasos.</p></div></div>
-      <div className="grid" style={{ gridTemplateColumns: "2fr 1fr" }}>
+      <div className="grid split-2">
         <div className="card" style={{ padding: 0 }}>
           <table className="tbl">
             <thead><tr><th>Persona</th><th>Rol</th><th>2 pasos</th><th>Último acceso</th><th></th></tr></thead>

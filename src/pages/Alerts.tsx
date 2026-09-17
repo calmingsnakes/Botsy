@@ -10,7 +10,7 @@ export function Alerts() {
   return (
     <>
       <div className="page-head"><div><h1>Alertas y notificaciones</h1><p>Solo te avisamos de lo que requiere una decisión tuya. Elige cómo recibirlas abajo.</p></div></div>
-      <div className="grid" style={{ gridTemplateColumns: "2fr 1fr" }}>
+      <div className="grid split-2">
         <div className="stack">
           {alerts?.map((a) => (
             <div key={a.id} className="card row between" style={a.acknowledged_at ? { opacity: 0.6 } : {}}>
