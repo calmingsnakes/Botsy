@@ -111,4 +111,4 @@ document.querySelector(".persona-tabs").addEventListener("click", (e) => { const
 paintServices("p1");
 
 // ---------- pilot form (demo: no backend yet)
-document.getElementById("pilot-form").addEventListener("submit", (e) => { e.preventDefault(); e.target.innerHTML = `<p style="grid-column:1/-1;font-weight:600">¡Gracias! Te escribimos en menos de 4 horas hábiles. (Demo: el formulario se conectará a Brevo/Worker.)</p>`; });
+document.getElementById("pilot-form").addEventListener("submit", (e) => { e.preventDefault(); e.target.innerHTML = `<p style="grid-column:1/-1;font-weight:600">¡Gracias! Te escribimos en menos de 4 horas hábiles. (Demo: el formulario se conectará al Worker → Cloudflare Email.)</p>`; });
