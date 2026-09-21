@@ -1,12 +1,14 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 import type { Api } from "../lib/api";
 import { getApi } from "../lib";
+import { useSession } from "../lib/session";
 
 // ---------- API context ----------
 const ApiCtx = createContext<Api | null>(null);
 export function ApiProvider({ children }: { children: React.ReactNode }) {
+  const { status } = useSession();
   const [api, setApi] = useState<Api | null>(null);
-  useEffect(() => { getApi().then(setApi); }, []);
+  useEffect(() => { if (status !== "loading") getApi().then(setApi); }, [status]);
   if (!api) return <div className="content"><p className="muted">Cargando…</p></div>;
   return <ApiCtx.Provider value={api}>{children}</ApiCtx.Provider>;
 }
