@@ -21,7 +21,7 @@ export function Team() {
             <thead><tr><th>Persona</th><th>Rol</th><th>2 pasos</th><th>Último acceso</th><th></th></tr></thead>
             <tbody>{members?.map((m) => (
               <tr key={m.user_id}><td><b>{m.display_name}</b> {m.status === "invited" && <Badge tone="amber">Invitado</Badge>}<div className="small muted">{m.email}</div></td>
-                <td><select className="select" value={m.role} onChange={async (e) => { try { await api.updateMember(m.user_id, e.target.value as OrgRole); reload(); toast("Rol actualizado"); } catch (x) { toast((x as Error).message); } }}>{(Object.keys(ROLES) as OrgRole[]).map((r) => <option key={r} value={r}>{r}</option>)}</select></td>
+                <td><select className="select" value={m.role} onChange={async (e) => { try { await api.updateMember(m.user_id, e.target.value as OrgRole); reload(); toast("Rol actualizado"); } catch (x) { toast((x as Error).message); reload(); } }}>{(Object.keys(ROLES) as OrgRole[]).map((r) => <option key={r} value={r}>{r}</option>)}</select></td>
                 <td>{m.mfa ? <Badge tone="green">Activa</Badge> : (m.role === "owner" || m.role === "admin") ? <Badge tone="red">Obligatoria · pendiente</Badge> : <Badge tone="gray">No</Badge>}</td>
                 <td className="small muted">{m.last_login ? ago(m.last_login) : "nunca"}</td>
                 <td><button className="btn sm danger" onClick={async () => { try { await api.removeMember(m.user_id); reload(); toast("Acceso retirado"); } catch (x) { toast((x as Error).message); } }}>Quitar</button></td></tr>
