@@ -9,15 +9,29 @@ import { MockApi } from "./mock-api";
 export class HttpApi implements Api {
   readonly mode = "http" as const;
   private fallback = new MockApi();
-  constructor(private baseUrl: string, private token: () => string | null) {}
+  constructor(private baseUrl: string, private token: () => string | null, private fetchImpl: typeof fetch = fetch) {}
 
   private async req<X>(path: string, init: RequestInit = {}): Promise<X> {
-    const res = await fetch(`${this.baseUrl}${path}`, { ...init, headers: { "content-type": "application/json", ...(this.token() ? { authorization: `Bearer ${this.token()}` } : {}), ...(init.headers ?? {}) } });
+    const t = this.token();
+    const res = await this.fetchImpl(`${this.baseUrl}${path}`, { ...init, headers: { "content-type": "application/json", ...(t ? { authorization: `Bearer ${t}` } : {}), ...(init.headers ?? {}) } });
     if (!res.ok) { const e = await res.json().catch(() => ({ message: res.statusText })); throw new Error(e.message ?? "Error"); }
     return res.json();
   }
   private orgId = "";
-  async me() { const m = await this.fallback.me(); this.orgId = m.org.id; return m; }
+  async me() {
+    const r = await this.req<{ user: { id: string; email: string; name: string }; orgs: T.OrgSummary[] }>("/v1/me");
+    const first = r.orgs[0];
+    this.orgId = first?.id ?? "";
+    const org: T.Org = first
+      ? { id: first.id, name: first.name, plan: first.plan, monthly_conversation_budget: 0, overage_allowed: false }
+      : { id: "", name: "", plan: "inicio", monthly_conversation_budget: 0, overage_allowed: false };
+    return { user: r.user, org, role: first?.role ?? ("viewer" as T.OrgRole), orgs: r.orgs };
+  }
+  async createOrg(name: string) {
+    const o = await this.req<{ id: string; name: string; slug: string; plan: T.PlanTier }>("/v1/orgs", { method: "POST", body: JSON.stringify({ name }) });
+    this.orgId = o.id;
+    return { id: o.id, name: o.name, plan: o.plan, role: "owner" as const };
+  }
   bots() { return this.req<T.Bot[]>("/v1/bots"); }
   async bot(id: string) { return (await this.bots()).find((b) => b.id === id)!; }
   updateBot(id: string, patch: Partial<T.Bot>) { return this.req<void>(`/v1/bots/${id}`, { method: "PATCH", body: JSON.stringify(patch) }); }
@@ -36,7 +50,7 @@ export class HttpApi implements Api {
   conversation(id: string) { return this.req<T.Conversation & { messages: T.Message[] }>(`/v1/conversations/${id}`); }
   async simulate(botId: string, history: { role: "user" | "assistant"; content: string }[]) {
     const last = history[history.length - 1];
-    const res = await fetch(`${this.baseUrl}/v1/chat`, { method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${this.token()}` }, body: JSON.stringify({ bot_id: botId, channel: "web", text: last.content }) });
+    const res = await this.fetchImpl(`${this.baseUrl}/v1/chat`, { method: "POST", headers: { "content-type": "application/json", authorization: `Bearer ${this.token()}` }, body: JSON.stringify({ bot_id: botId, channel: "web", text: last.content }) });
     if (!res.ok || !res.body) throw new Error("No se pudo simular");
     return res.body.pipeThrough(new TextDecoderStream());
   }
@@ -46,10 +60,10 @@ export class HttpApi implements Api {
   alerts() { return this.fallback.alerts(); }
   ackAlert(id: string) { return this.fallback.ackAlert(id); }
   changelog() { return this.fallback.changelog(); }
-  members() { return this.fallback.members(); }
-  invite(email: string, role: T.OrgRole) { return this.fallback.invite(email, role); }
-  updateMember(userId: string, role: T.OrgRole) { return this.fallback.updateMember(userId, role); }
-  removeMember(userId: string) { return this.fallback.removeMember(userId); }
+  members() { return this.req<T.Member[]>(`/v1/orgs/${this.orgId}/members`); }
+  async invite(email: string, role: T.OrgRole) { await this.req(`/v1/orgs/${this.orgId}/invites`, { method: "POST", body: JSON.stringify({ email, role }) }); }
+  async updateMember(userId: string, role: T.OrgRole) { await this.req(`/v1/orgs/${this.orgId}/members/${userId}`, { method: "PATCH", body: JSON.stringify({ role }) }); }
+  async removeMember(userId: string) { await this.req(`/v1/orgs/${this.orgId}/members/${userId}`, { method: "DELETE" }); }
   audit(limit?: number) { return this.fallback.audit(limit); }
   invoices() { return this.fallback.invoices(); }
   checkout(plan: T.PlanTier) { return this.req<{ url: string }>("/v1/billing/checkout", { method: "POST", body: JSON.stringify({ org_id: this.orgId, plan }) }); }
