@@ -3,7 +3,8 @@ import type * as T from "./types";
 /** The contract both MockApi (demo) and HttpApi (Worker) implement. Pages depend only on this. */
 export interface Api {
   readonly mode: "mock" | "http";
-  me(): Promise<{ user: { id: string; name: string; email: string }; org: T.Org; role: T.OrgRole }>;
+  me(): Promise<{ user: { id: string; name: string; email: string }; org: T.Org; role: T.OrgRole; orgs: T.OrgSummary[] }>;
+  createOrg(name: string): Promise<T.OrgSummary>;
   bots(): Promise<T.Bot[]>;
   bot(id: string): Promise<T.Bot>;
   updateBot(id: string, patch: Partial<T.Bot>): Promise<void>;

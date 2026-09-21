@@ -19,7 +19,8 @@ export interface MasterDocument {
 }
 
 export interface Org { id: string; name: string; plan: PlanTier; monthly_conversation_budget: number; overage_allowed: boolean; rfc?: string; billing_email?: string }
-export interface Member { user_id: string; display_name: string; email: string; role: OrgRole; mfa: boolean; last_login?: string }
+export interface Member { user_id: string; display_name: string; email: string; role: OrgRole; mfa: boolean; last_login?: string; status: "active" | "invited" }
+export interface OrgSummary { id: string; name: string; plan: PlanTier; role: OrgRole }
 export interface Bot { id: string; org_id: string; name: string; service_code: string; status: BotStatus; model: string; provider: string; language: string; published_version: number; kpi_name?: string; kpi_target?: number; kpi_current?: number; created_at: string }
 export interface DmVersion { version: number; reason?: string; published_at: string; published_by?: string }
 export interface KnowledgeSource { id: string; bot_id: string; kind: string; title: string; status: "uploaded" | "processing" | "ready" | "failed"; error?: string; chunk_count: number; sample_questions: string[]; priority: number; created_at: string }
