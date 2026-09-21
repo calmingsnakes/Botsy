@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink, Route, Routes, useLocation } from "react-router-dom";
 import { ApiProvider, ToastProvider, useApi, useData } from "./components/ui";
 import { BRAND } from "./brand";
+import { SessionProvider, useSession } from "./lib/session";
+import { Login } from "./pages/auth/Login";
+import { RequireSession } from "./pages/auth/RequireSession";
 import { Home } from "./pages/Home";
 import { Bots } from "./pages/Bots";
 import { BotDetail } from "./pages/BotDetail";
@@ -56,43 +59,71 @@ function Topbar() {
       <div className="who">
         {api.mode === "mock" && <span className="badge rosa">Modo demo · datos de ejemplo</span>}
         <span>{me?.user.name}</span>
-        <span className="avatar" aria-hidden>{me?.user.name.split(" ").map((s) => s[0]).join("").slice(0, 2)}</span>
+        <UserMenu name={me?.user.name ?? ""} email={me?.user.email ?? ""} />
       </div>
     </header>
+  );
+}
+
+function UserMenu({ name, email }: { name: string; email: string }) {
+  const { signOut } = useSession();
+  const [open, setOpen] = useState(false);
+  const initials = name.split(" ").map((s) => s[0]).join("").slice(0, 2) || "?";
+  return (
+    <div className="usermenu">
+      <button className="avatar" aria-label="Cuenta" aria-expanded={open} onClick={() => setOpen((o) => !o)}>{initials}</button>
+      {open && (
+        <div className="card usermenu-pop">
+          <div className="small muted">{email}</div>
+          <button className="btn sm" onClick={() => { setOpen(false); signOut(); }}>Cerrar sesión</button>
+        </div>
+      )}
+    </div>
   );
 }
 
 export function App() {
   return (
     <ToastProvider>
-      <ApiProvider>
-        <div className="shell">
-          <Sidebar />
-          <div className="main">
-            <Topbar />
-            <main className="content">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/bots" element={<Bots />} />
-                <Route path="/bots/:id/*" element={<BotDetail />} />
-                <Route path="/conversaciones" element={<Conversations />} />
-                <Route path="/conversaciones/:id" element={<Conversations />} />
-                <Route path="/rayos-x" element={<Analytics />} />
-                <Route path="/consumo" element={<Usage />} />
-                <Route path="/cambios" element={<Changelog />} />
-                <Route path="/equipo" element={<Team />} />
-                <Route path="/integraciones" element={<Integrations />} />
-                <Route path="/facturacion" element={<Billing />} />
-                <Route path="/privacidad" element={<Privacy />} />
-                <Route path="/auditoria" element={<Audit />} />
-                <Route path="/cuenta" element={<Account />} />
-                <Route path="/alertas" element={<Alerts />} />
-                <Route path="*" element={<p>Esta página no existe. <NavLink to="/">Volver al inicio</NavLink></p>} />
-              </Routes>
-            </main>
-          </div>
-        </div>
-      </ApiProvider>
+      <SessionProvider>
+        <ApiProvider>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/*" element={<RequireSession><Shell /></RequireSession>} />
+          </Routes>
+        </ApiProvider>
+      </SessionProvider>
     </ToastProvider>
+  );
+}
+
+function Shell() {
+  return (
+    <div className="shell">
+      <Sidebar />
+      <div className="main">
+        <Topbar />
+        <main className="content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/bots" element={<Bots />} />
+            <Route path="/bots/:id/*" element={<BotDetail />} />
+            <Route path="/conversaciones" element={<Conversations />} />
+            <Route path="/conversaciones/:id" element={<Conversations />} />
+            <Route path="/rayos-x" element={<Analytics />} />
+            <Route path="/consumo" element={<Usage />} />
+            <Route path="/cambios" element={<Changelog />} />
+            <Route path="/equipo" element={<Team />} />
+            <Route path="/integraciones" element={<Integrations />} />
+            <Route path="/facturacion" element={<Billing />} />
+            <Route path="/privacidad" element={<Privacy />} />
+            <Route path="/auditoria" element={<Audit />} />
+            <Route path="/cuenta" element={<Account />} />
+            <Route path="/alertas" element={<Alerts />} />
+            <Route path="*" element={<p>Esta página no existe. <NavLink to="/">Volver al inicio</NavLink></p>} />
+          </Routes>
+        </main>
+      </div>
+    </div>
   );
 }

@@ -185,3 +185,11 @@ table.tbl tr.clickable { cursor: pointer; }
   .diff .body { grid-template-columns: 1fr; }
   .hbar { grid-template-columns: 110px 1fr 50px; }
 }
+
+/* auth screens */
+.auth { min-height: 100vh; display: grid; place-items: center; padding: 16px; background: var(--paper); }
+.auth-card { width: 100%; max-width: 380px; padding: 24px; }
+.auth-card h1 { margin: 4px 0 0; font-size: 22px; }
+.usermenu { position: relative; }
+.usermenu .avatar { cursor: pointer; border: 0; }
+.usermenu-pop { position: absolute; right: 0; top: 40px; min-width: 220px; padding: 12px; display: grid; gap: 8px; z-index: 20; }
