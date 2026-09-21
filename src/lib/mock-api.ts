@@ -29,7 +29,8 @@ export class MockApi implements Api {
     this._audit.unshift({ id: this._audit.length + 1, actor: D.USER.name, actor_type: "user", action, object_type, object_id, details, ip: "189.203.1.10", created_at: now() });
   }
 
-  async me() { await wait(100); return { user: D.USER, org: clone(D.ORG), role: "owner" as const }; }
+  async me() { await wait(100); return { user: D.USER, org: clone(D.ORG), role: "owner" as const, orgs: [{ id: D.ORG.id, name: D.ORG.name, plan: D.ORG.plan, role: "owner" as const }] }; }
+  async createOrg(name: string) { await wait(); this.log("org.create", "org", D.ORG.id, { name }); return { id: D.ORG.id, name, plan: "inicio" as const, role: "owner" as const }; }
   async bots() { await wait(); return clone(this._bots); }
   async bot(id: string) { await wait(100); const b = this._bots.find((x) => x.id === id); if (!b) throw new Error("Bot no encontrado"); return clone(b); }
   async updateBot(id: string, patch: Partial<T.Bot>) { await wait(); Object.assign(this._bots.find((b) => b.id === id)!, patch); this.log("bot.update", "bot", id, patch as any); }
@@ -155,7 +156,7 @@ export class MockApi implements Api {
   async ackAlert(id: string) { await wait(100); const a = this._alerts.find((x) => x.id === id); if (a) a.acknowledged_at = now(); }
   async changelog() { await wait(); return clone(this._changelog); }
   async members() { await wait(); return clone(this._members); }
-  async invite(email: string, role: T.OrgRole) { await wait(); this._members.push({ user_id: `usr_${Date.now()}`, display_name: email.split("@")[0], email, role, mfa: false }); this.log("member.invite", "member", email, { role }); }
+  async invite(email: string, role: T.OrgRole) { await wait(); this._members.push({ user_id: `usr_${Date.now()}`, display_name: email.split("@")[0], email, role, mfa: false, status: "invited" as const }); this.log("member.invite", "member", email, { role }); }
   async updateMember(userId: string, role: T.OrgRole) { await wait(); this._members.find((m) => m.user_id === userId)!.role = role; this.log("member.update", "member", userId, { role }); }
   async removeMember(userId: string) { await wait(); this._members = this._members.filter((m) => m.user_id !== userId); this.log("member.remove", "member", userId); }
   async audit(limit = 100) { await wait(); return clone(this._audit.slice(0, limit)); }

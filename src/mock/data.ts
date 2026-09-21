@@ -161,10 +161,10 @@ export const ALERTS: T.Alert[] = [
 ];
 
 export const MEMBERS: T.Member[] = [
-  { user_id: "usr_ana", display_name: "Ana Rodríguez", email: "ana@laespiga.mx", role: "owner", mfa: true, last_login: daysAgo(0, 8) },
-  { user_id: "usr_luis", display_name: "Luis Herrera", email: "luis@laespiga.mx", role: "admin", mfa: true, last_login: daysAgo(1) },
-  { user_id: "usr_mar", display_name: "Mariana Soto", email: "mariana@laespiga.mx", role: "editor", mfa: false, last_login: daysAgo(4) },
-  { user_id: "usr_cont", display_name: "Despacho contable", email: "contador@ejemplo.mx", role: "viewer", mfa: false, last_login: daysAgo(12) },
+  { user_id: "usr_ana", display_name: "Ana Rodríguez", email: "ana@laespiga.mx", role: "owner", mfa: true, last_login: daysAgo(0, 8), status: "active" },
+  { user_id: "usr_luis", display_name: "Luis Herrera", email: "luis@laespiga.mx", role: "admin", mfa: true, last_login: daysAgo(1), status: "active" },
+  { user_id: "usr_mar", display_name: "Mariana Soto", email: "mariana@laespiga.mx", role: "editor", mfa: false, last_login: daysAgo(4), status: "active" },
+  { user_id: "usr_cont", display_name: "Despacho contable", email: "contador@ejemplo.mx", role: "viewer", mfa: false, status: "invited" },
 ];
 
 export const AUDIT: T.AuditEntry[] = [
