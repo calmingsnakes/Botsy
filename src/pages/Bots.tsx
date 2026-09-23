@@ -22,7 +22,7 @@ export function Bots() {
     <>
       <div className="page-head">
         <div><h1>Mis bots</h1><p>Cada bot se rige por su Documento Maestro. Cambia lo que quieras pidiéndoselo con tus palabras; nada se publica sin tu aprobación.</p></div>
-        <button className="btn primary" onClick={() => setOpen(true)}>Nuevo bot</button>
+        <button className="btn primary" onClick={() => nav("/bots/nuevo")}>Nuevo bot</button>
       </div>
       <div className="grid c3">
         {bots?.map((b) => (
@@ -45,7 +45,7 @@ export function Bots() {
           </div>
         </Modal>
       )}
-      {bots && bots.length === 0 && <div className="empty"><b>Aún no tienes bots</b>Crea el primero: elige un servicio, sube tus documentos y pruébalo en 10 minutos.</div>}
+      {bots && bots.length === 0 && <div className="empty"><b>Aún no tienes bots</b>Crea el primero: elige una plantilla, contesta unas preguntas y sube tus documentos.<div style={{ marginTop: 12 }}><button className="btn primary" onClick={() => nav("/bots/nuevo")}>Crear mi primer bot</button></div></div>}
     </>
   );
 }

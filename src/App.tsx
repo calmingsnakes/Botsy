@@ -7,6 +7,7 @@ import { Login } from "./pages/auth/Login";
 import { RequireSession } from "./pages/auth/RequireSession";
 import { Home } from "./pages/Home";
 import { Bots } from "./pages/Bots";
+import { NuevoBot } from "./pages/NuevoBot";
 import { BotDetail } from "./pages/BotDetail";
 import { Conversations } from "./pages/Conversations";
 import { Analytics } from "./pages/Analytics";
@@ -107,6 +108,7 @@ function Shell() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/bots" element={<Bots />} />
+                <Route path="/bots/nuevo" element={<NuevoBot />} />
             <Route path="/bots/:id/*" element={<BotDetail />} />
             <Route path="/conversaciones" element={<Conversations />} />
             <Route path="/conversaciones/:id" element={<Conversations />} />

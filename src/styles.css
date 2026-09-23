@@ -193,3 +193,24 @@ table.tbl tr.clickable { cursor: pointer; }
 .usermenu { position: relative; }
 .usermenu .avatar { cursor: pointer; border: 0; }
 .usermenu-pop { position: absolute; right: 0; top: 40px; min-width: 220px; padding: 12px; display: grid; gap: 8px; z-index: 20; }
+
+/* asistente de creación de bot */
+.plantilla { text-align: left; cursor: pointer; border: 1px solid var(--line); background: var(--paper); transition: border-color .12s, transform .12s; }
+.plantilla:hover:not(:disabled) { border-color: var(--rosa); transform: translateY(-2px); }
+.plantilla:disabled { opacity: .55; cursor: wait; }
+.pasos { display: flex; gap: 8px; list-style: none; padding: 0; margin: 0 0 16px; flex-wrap: wrap; }
+.pasos li { font-size: 13px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); }
+.pasos li.activo { border-color: var(--rosa); color: var(--rosa); font-weight: 600; }
+.pasos li.hecho { color: var(--green); border-color: var(--green); }
+.campo { display: block; font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.campo .input, .campo .select, .campo .row { margin-top: 6px; font-weight: 400; }
+.pista { display: block; font-size: 12px; font-weight: 400; color: var(--muted); margin-top: 2px; }
+.lista-check { margin: 6px 0 0; padding-left: 18px; font-weight: 400; font-size: 13px; color: var(--muted); }
+.regla { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; background: var(--paper); }
+.regla summary { cursor: pointer; display: flex; gap: 8px; align-items: flex-start; font-size: 13px; line-height: 1.45; }
+.regla summary::-webkit-details-marker { display: none; }
+.regla .candado { flex: 0 0 auto; opacity: .6; font-size: 12px; }
+.regla .porque { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line); }
+.regla-propia { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; }
+.resumen p { line-height: 1.6; margin: 0 0 4px; }
+.aviso-borrador { margin-top: 8px; padding: 12px 14px; border-radius: 8px; background: var(--paper); border-left: 3px solid var(--rosa); font-size: 13px; }

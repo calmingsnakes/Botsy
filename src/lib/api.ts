@@ -44,4 +44,9 @@ export interface Api {
   createApiKey(k: { name: string; bot_id?: string; allowed_origins: string[] }): Promise<{ key: string } & T.ApiKey>;
   revokeApiKey(id: string): Promise<void>;
   exportAll(): Promise<Blob>;
+  // plantillas y cuestionario
+  templates(): Promise<{ plantillas: T.PlantillaResumen[]; aviso_reglas: string; limites: { bytes_por_fuente: number; fuentes_por_bot: number } }>;
+  template(id: string): Promise<T.PlantillaDetalle>;
+  createBotFromTemplate(plantillaId: string, r: T.RespuestasCuestionario): Promise<{ bot: T.Bot; estado: string }>;
+  restoreVersion(botId: string, version: number): Promise<{ version: number; restaurada: number }>;
 }

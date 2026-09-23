@@ -181,6 +181,39 @@ export class MockApi implements Api {
     return { key, ...row };
   }
   async revokeApiKey(id: string) { await wait(); this.keys = this.keys.filter((k) => k.id !== id); this.log("api_key.revoke", "api_key", id); }
+  // --- plantillas (en demo, un subconjunto representativo de las 7 del Worker)
+  async templates() { await wait(); return { plantillas: D.PLANTILLAS_DEMO, aviso_reglas: D.AVISO_REGLAS, limites: { bytes_por_fuente: 2097152, fuentes_por_bot: 50 } }; }
+  async template(id: string) {
+    await wait();
+    const p = D.PLANTILLAS_DEMO.find((x) => x.id === id);
+    if (!p) throw new Error("Esa plantilla no existe");
+    return D.detallePlantilla(p);
+  }
+  async createBotFromTemplate(plantillaId: string, r: T.RespuestasCuestionario) {
+    await wait(400);
+    const p = D.PLANTILLAS_DEMO.find((x) => x.id === plantillaId)!;
+    const bot: T.Bot = {
+      id: `bot_${Date.now()}`, org_id: D.ORG.id, name: `${r.agente || p.agente} — ${p.titulo}`,
+      service_code: p.svc, status: "draft", model: "claude-haiku-4-5", provider: "anthropic",
+      language: "es-MX", published_version: 0, created_at: now(),
+    };
+    this._bots.push(bot);
+    this.dm[bot.id] = D.detallePlantilla(p).dm;
+    this.versions[bot.id] = [];
+    this.log("bot.create", "bot", bot.id, { origen: "cuestionario", plantilla: plantillaId });
+    return { bot: clone(bot), estado: "borrador" };
+  }
+  async restoreVersion(botId: string, version: number) {
+    await wait();
+    const vs = this.versions[botId] ?? [];
+    if (!vs.some((v) => v.version === version)) throw new Error("Esa versión no existe");
+    const nueva = (vs[0]?.version ?? 0) + 1;
+    vs.unshift({ version: nueva, reason: `Restauración de la versión ${version}`, published_at: now(), published_by: D.USER.name });
+    this._changelog.unshift({ id: `chg_${Date.now()}`, bot_id: botId, bot_name: this._bots.find((b) => b.id === botId)?.name ?? "", version: nueva, reason: `Restauración de la versión ${version}`, actor: D.USER.name, at: now(), changes: 0 });
+    this.log("bot.restore", "bot", botId, { restaurada: version, nueva_version: nueva });
+    return { version: nueva, restaurada: version };
+  }
+
   async exportAll() {
     await wait(500);
     const payload = { exported_at: now(), org: D.ORG, bots: this._bots, master_documents: this.dm, sources: this._sources, conversations: this._conversations.map((c) => ({ ...c, messages: D.messagesFor(c) })), changelog: this._changelog, audit: this._audit };

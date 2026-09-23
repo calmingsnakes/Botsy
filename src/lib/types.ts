@@ -39,3 +39,24 @@ export interface DataRequest { id: string; type: "access" | "rectification" | "c
 export interface RetentionPolicy { transcript_days: number; redact_pii_before_llm: boolean; store_sensitive: boolean; voice_recordings: boolean }
 export interface ApiKey { id: string; bot_id?: string; name: string; key_prefix: string; scopes: string[]; allowed_origins: string[]; last_used_at?: string; created_at: string }
 export interface ChangelogEntry { id: string; bot_id: string; bot_name: string; version: number; reason: string; actor: string; at: string; changes: number }
+
+// --- plantillas y cuestionario de creación de bots
+export type NivelGuardrails = "basico" | "intermedio" | "avanzado";
+export type TipoRegla = "legal" | "compromiso" | "seguridad" | "operativa";
+export interface ReglaExplicada { regla: string; tipo: TipoRegla; porque: string }
+export interface PlantillaResumen { id: string; agente: string; titulo: string; svc: string; guardrails: NivelGuardrails; canales: string[]; para_quien: string }
+export interface PlantillaDetalle extends Omit<PlantillaResumen, "agente"> {
+  agente: { nombre: string; apellido: string };
+  parametros: string[];
+  dm: MasterDocument;
+  starters: string[];
+  fragmentos_sugeridos: number;
+  reglas_explicadas: ReglaExplicada[];
+  aviso_reglas: string;
+}
+export interface RespuestasCuestionario {
+  empresa?: string; agente?: string; objetivo?: string; registro?: "tú" | "usted";
+  reglas_adicionales?: string[]; disparadores?: string[]; correo_escalamiento?: string;
+  horario?: string; aviso_privacidad?: string; kpi?: { name: string; target: number };
+}
+

@@ -76,4 +76,12 @@ export class HttpApi implements Api {
   createApiKey(k: { name: string; bot_id?: string; allowed_origins: string[] }) { return this.fallback.createApiKey(k); }
   revokeApiKey(id: string) { return this.fallback.revokeApiKey(id); }
   exportAll() { return this.fallback.exportAll(); }
+  templates() { return this.req<{ plantillas: T.PlantillaResumen[]; aviso_reglas: string; limites: { bytes_por_fuente: number; fuentes_por_bot: number } }>("/v1/templates"); }
+  template(id: string) { return this.req<T.PlantillaDetalle>(`/v1/templates/${id}`); }
+  createBotFromTemplate(plantillaId: string, r: T.RespuestasCuestionario) {
+    return this.req<{ bot: T.Bot; estado: string }>(`/v1/templates/${plantillaId}/bot`, { method: "POST", body: JSON.stringify({ ...r, org_id: this.orgId, plantilla_id: plantillaId }) });
+  }
+  restoreVersion(botId: string, version: number) {
+    return this.req<{ version: number; restaurada: number }>(`/v1/bots/${botId}/master-document/restore`, { method: "POST", body: JSON.stringify({ version }) });
+  }
 }
