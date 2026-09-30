@@ -1,4 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import type { Api } from "../lib/api";
 import { getApi } from "../lib";
 import { useSession } from "../lib/session";
@@ -19,10 +20,16 @@ export function useData<X>(loader: (api: Api) => Promise<X>, deps: unknown[] = [
   const api = useApi();
   const [data, setData] = useState<X | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const [tick, setTick] = useState(0);
-  useEffect(() => { let on = true; setError(null); loader(api).then((d) => on && setData(d)).catch((e) => on && setError(e.message)); return () => { on = false; }; }, [api, tick, ...deps]);
+  useEffect(() => {
+    let on = true;
+    setError(null); setLoading(true);
+    loader(api).then((d) => on && setData(d)).catch((e) => on && setError(e.message)).finally(() => on && setLoading(false));
+    return () => { on = false; };
+  }, [api, tick, ...deps]);
   const reload = useCallback(() => setTick((t) => t + 1), []);
-  return { data, error, reload, setData };
+  return { data, error, loading, reload, setData };
 }
 
 // ---------- toasts ----------
@@ -41,8 +48,74 @@ export const useToast = () => useContext(ToastCtx);
 
 // ---------- primitives ----------
 export function Badge({ children, tone = "" }: { children: React.ReactNode; tone?: "" | "green" | "amber" | "red" | "rosa" | "gray" }) { return <span className={`badge ${tone}`}>{children}</span>; }
-export function Stat({ label, value, delta, up }: { label: string; value: React.ReactNode; delta?: string; up?: boolean | null }) {
-  return <div className="card stat"><span className="label">{label}</span><span className="value">{value}</span>{delta && <span className={`delta ${up === true ? "up" : up === false ? "down" : ""}`}>{delta}</span>}</div>;
+export function Skeleton({ w = "100%", h = 14 }: { w?: number | string; h?: number }) {
+  return <span className="sk" style={{ width: w, height: h, display: "block" }} aria-hidden />;
+}
+export function ErrorNote({ error, retry }: { error: string; retry: () => void }) {
+  return (
+    <div className="err-note" role="alert">
+      <span>No se pudo cargar: {error}</span>
+      <button className="btn sm" onClick={retry}>Reintentar</button>
+    </div>
+  );
+}
+export function Stat({ label, value, delta, up, spark, to }: { label: string; value: React.ReactNode; delta?: string; up?: boolean | null; spark?: number[]; to?: string }) {
+  const body = (
+    <div className="card stat">
+      <span className="label">{label}</span>
+      <span className="value">{value}</span>
+      {delta && <span className={`delta ${up === true ? "up" : up === false ? "down" : ""}`}>{delta}</span>}
+      {spark && spark.length > 1 && <Sparkline values={spark} />}
+    </div>
+  );
+  return to ? <Link to={to} className="stat-link">{body}</Link> : body;
+}
+export function Sparkline({ values }: { values: number[] }) {
+  const max = Math.max(...values);
+  const min = Math.min(...values);
+  const span = max - min || 1;
+  const pts = values.map((v, i) => `${(i / (values.length - 1)) * 100},${28 - ((v - min) / span) * 24}`).join(" ");
+  return (
+    <svg className="spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden>
+      <polyline points={pts} />
+    </svg>
+  );
+}
+const fmtDayShort = (s: string) => new Date(s + "T12:00:00").toLocaleDateString("es-MX", { day: "numeric", month: "short" });
+/** Daily bar chart: auto-scaled, hover tooltip, dashed gridlines, today highlighted. */
+export function BarChart({ data, ariaLabel, height = 140 }: { data: { day: string; value: number }[]; ariaLabel?: string; height?: number }) {
+  const [hov, setHov] = useState<number | null>(null);
+  if (!data.length) return <Empty title="Sin datos todavía" />;
+  const max = Math.max(...data.map((d) => d.value), 1);
+  const nice = Math.max(50, Math.ceil((max * 1.08) / 50) * 50);
+  const n = data.length;
+  return (
+    <div className="chart" role="img" aria-label={ariaLabel}>
+      <div className="frame" style={{ height }}>
+        <div className="grid" aria-hidden>
+          {[0.5, 1].map((f) => <span key={f} className="gline" style={{ bottom: `${f * 100}%` }}><em>{fmtN(Math.round(nice * f))}</em></span>)}
+        </div>
+        <div className="plot" onMouseLeave={() => setHov(null)}>
+          {data.map((d, i) => (
+            <div key={d.day}
+              className={`col ${i === n - 1 ? "today" : ""} ${hov === i ? "hov" : ""}`}
+              style={{ height: `${(d.value / nice) * 100}%` }}
+              onMouseEnter={() => setHov(i)} />
+          ))}
+          {hov !== null && (
+            <div className="tip" style={{ left: `${Math.min(88, Math.max(12, ((hov + 0.5) / n) * 100))}%` }}>
+              {fmtDayShort(data[hov].day)} · <b>{fmtN(data[hov].value)}</b>
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="xaxis" aria-hidden>
+        <span>{fmtDayShort(data[0].day)}</span>
+        <span>{fmtDayShort(data[Math.floor(n / 2)].day)}</span>
+        <span>hoy</span>
+      </div>
+    </div>
+  );
 }
 export function Empty({ title, children }: { title: string; children?: React.ReactNode }) { return <div className="empty"><b>{title}</b>{children}</div>; }
 export function Modal({ title, onClose, children }: { title: string; onClose: () => void; children: React.ReactNode }) {

@@ -28,8 +28,14 @@ const NAV: { group: string; items: { to: string; label: string; badge?: string }
 ];
 
 function Sidebar() {
-  const { data: alerts } = useData((api) => api.alerts());
+  const { data: alerts, reload } = useData((api) => api.alerts());
   const pending = alerts?.filter((a) => !a.acknowledged_at).length ?? 0;
+  // Home can acknowledge alerts inline; refresh the badge when that happens.
+  React.useEffect(() => {
+    const h = () => reload();
+    window.addEventListener("botsy:alerts", h);
+    return () => window.removeEventListener("botsy:alerts", h);
+  }, [reload]);
   return (
     <nav className="sidebar" aria-label="Navegación principal">
       <div className="brand"><span className="mark" aria-hidden />{BRAND}</div>
@@ -70,12 +76,19 @@ function UserMenu({ name, email }: { name: string; email: string }) {
   const { signOut } = useSession();
   const [open, setOpen] = useState(false);
   const initials = name.split(" ").map((s) => s[0]).join("").slice(0, 2) || "?";
+  React.useEffect(() => {
+    if (!open) return;
+    const h = (e: MouseEvent) => { if (!(e.target as HTMLElement).closest(".usermenu")) setOpen(false); };
+    document.addEventListener("mousedown", h);
+    return () => document.removeEventListener("mousedown", h);
+  }, [open]);
   return (
     <div className="usermenu">
       <button className="avatar" aria-label="Cuenta" aria-expanded={open} onClick={() => setOpen((o) => !o)}>{initials}</button>
       {open && (
         <div className="card usermenu-pop">
           <div className="small muted">{email}</div>
+          <NavLink className="btn sm" to="/cuenta" onClick={() => setOpen(false)}>Mi cuenta</NavLink>
           <button className="btn sm" onClick={() => { setOpen(false); signOut(); }}>Cerrar sesión</button>
         </div>
       )}
