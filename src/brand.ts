@@ -2,3 +2,7 @@
 export const BRAND = "Hablia";
 export const BRAND_TAGLINE = "Habla con tus clientes como si estuvieras ahí.";
 export const BRAND_DOMAIN = "hablia.mx";
+
+// The floating chat widget is served by the Worker as a static asset at <root>/widget.js;
+// VITE_API_URL points at …/v1, so derive the root from it (with a sane default for local dev).
+export const WIDGET_SRC = (((import.meta as any).env?.VITE_API_URL as string | undefined) ?? "https://hablia-api.artmedinas.workers.dev/v1").replace(/\/v1\/?$/, "") + "/widget.js";

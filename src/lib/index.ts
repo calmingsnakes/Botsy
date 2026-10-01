@@ -12,7 +12,7 @@ export type { Api };
 export async function selectApi(opts: { apiUrl?: string; fetchImpl?: typeof fetch; token?: () => string | null } = {}): Promise<Api> {
   const url = opts.apiUrl ?? (import.meta as any).env?.VITE_API_URL;
   if (!url) return new MockApi();
-  const f = opts.fetchImpl ?? fetch;
+  const f = opts.fetchImpl ?? ((...a: Parameters<typeof fetch>) => fetch(...a));
   try {
     const ctrl = new AbortController();
     const t = setTimeout(() => ctrl.abort(), 3000);

@@ -1,3 +1,4 @@
+import { WIDGET_SRC } from "../brand";
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, Route, Routes, useParams } from "react-router-dom";
 import type { Bot, ChangeRequest, Channel, KnowledgeSource, MasterDocument } from "../lib/types";
@@ -269,7 +270,7 @@ function Channels({ bot }: { bot: Bot }) {
               <div className="stack small">
                 <label><input type="checkbox" checked={ch.ai_disclosure_confirmed} onChange={async (e) => { await api.updateChannel(bot.id, ch.id, { ai_disclosure_confirmed: e.target.checked }); reload(); }} /> El primer mensaje dice que es IA y ofrece humano (no editable)</label>
                 <label className="field">Aviso de privacidad del canal <input className="input" defaultValue={ch.privacy_notice_url ?? ""} onBlur={async (e) => { await api.updateChannel(bot.id, ch.id, { privacy_notice_url: e.target.value }); }} placeholder="https://tusitio.mx/privacidad" /></label>
-                {t === "web" && <pre className="mono" style={{ background: "#f6f5fb", padding: 10, borderRadius: 8, overflow: "auto" }}>{`<script src="https://cdn.${"brand"}.mx/widget.js" data-bot="${bot.id}" data-key="bk_live_…"></script>`}</pre>}
+                {t === "web" && <pre className="mono" style={{ background: "#f6f5fb", padding: 10, borderRadius: 8, overflow: "auto" }}>{`<script src="${WIDGET_SRC}" data-bot="${bot.id}" data-key="bk_live_…"></script>`}</pre>}
                 {t === "whatsapp" && <div>Número: <b>{String(ch.config.phone_number ?? "pendiente")}</b></div>}
                 <div className="row"><button className="btn sm" onClick={() => toggle(ch)}>{ch.enabled ? "Desactivar" : "Activar"}</button></div>
               </div>

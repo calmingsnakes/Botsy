@@ -9,7 +9,7 @@ import { MockApi } from "./mock-api";
 export class HttpApi implements Api {
   readonly mode = "http" as const;
   private fallback = new MockApi();
-  constructor(private baseUrl: string, private token: () => string | null, private fetchImpl: typeof fetch = fetch) {}
+  constructor(private baseUrl: string, private token: () => string | null, private fetchImpl: typeof fetch = (...a) => fetch(...a)) {}
 
   private async req<X>(path: string, init: RequestInit = {}): Promise<X> {
     const t = this.token();
@@ -72,9 +72,9 @@ export class HttpApi implements Api {
   createDataRequest(r: { type: T.DataRequest["type"]; requester_ref: string }) { return this.fallback.createDataRequest(r); }
   retention() { return this.fallback.retention(); }
   saveRetention(p: T.RetentionPolicy) { return this.fallback.saveRetention(p); }
-  apiKeys() { return this.fallback.apiKeys(); }
-  createApiKey(k: { name: string; bot_id?: string; allowed_origins: string[] }) { return this.fallback.createApiKey(k); }
-  revokeApiKey(id: string) { return this.fallback.revokeApiKey(id); }
+  apiKeys() { return this.req<{ keys: T.ApiKey[] }>("/v1/keys").then((r) => r.keys); }
+  createApiKey(k: { name: string; bot_id?: string; allowed_origins: string[] }) { return this.req<T.ApiKey & { key: string }>("/v1/keys", { method: "POST", body: JSON.stringify(k) }); }
+  revokeApiKey(id: string) { return this.req<{ ok: boolean }>(`/v1/keys/${id}`, { method: "DELETE" }).then(() => undefined); }
   exportAll() { return this.fallback.exportAll(); }
   templates() { return this.req<{ plantillas: T.PlantillaResumen[]; aviso_reglas: string; limites: { bytes_por_fuente: number; fuentes_por_bot: number } }>("/v1/templates"); }
   template(id: string) { return this.req<T.PlantillaDetalle>(`/v1/templates/${id}`); }

@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Badge, Modal, ago, useApi, useData, useToast } from "../components/ui";
 
+// The widget is served by the Worker root as a static asset (/widget.js); VITE_API_URL points at …/v1.
+const WIDGET_SRC = (((import.meta as any).env?.VITE_API_URL as string | undefined) ?? "https://hablia-api.artmedinas.workers.dev/v1").replace(/\/v1\/?$/, "") + "/widget.js";
+
 export function Integrations() {
   const api = useApi();
   const toast = useToast();
@@ -32,7 +35,7 @@ export function Integrations() {
               <div className="row" style={{ justifyContent: "flex-end" }}><button className="btn primary" disabled={!form.name || !form.bot_id} onClick={async () => { const r = await api.createApiKey({ name: form.name, bot_id: form.bot_id, allowed_origins: form.origins.split(",").map((s) => s.trim()).filter(Boolean) }); setCreated(r.key); reload(); }}>Crear</button></div>
             </div>
           ) : (
-            <div className="stack"><p>Copia tu clave ahora. <b>No la volveremos a mostrar.</b></p><pre className="mono" style={{ background: "#f6f5fb", padding: 12, borderRadius: 8 }}>{created}</pre><pre className="mono small" style={{ background: "#f6f5fb", padding: 12, borderRadius: 8, overflow: "auto" }}>{`<script src="https://cdn.brand.mx/widget.js" data-bot="${form.bot_id}" data-key="${created}"></script>`}</pre></div>
+            <div className="stack"><p>Copia tu clave ahora. <b>No la volveremos a mostrar.</b></p><pre className="mono" style={{ background: "#f6f5fb", padding: 12, borderRadius: 8 }}>{created}</pre><pre className="mono small" style={{ background: "#f6f5fb", padding: 12, borderRadius: 8, overflow: "auto" }}>{`<script src="${WIDGET_SRC}" data-bot="${form.bot_id}" data-key="${created}"></script>`}</pre></div>
           )}
         </Modal>
       )}
