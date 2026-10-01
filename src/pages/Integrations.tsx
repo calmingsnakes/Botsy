@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Badge, Modal, ago, useApi, useData, useToast } from "../components/ui";
 
 // The widget is served by the Worker root as a static asset (/widget.js); VITE_API_URL points at …/v1.
-const WIDGET_SRC = (((import.meta as any).env?.VITE_API_URL as string | undefined) ?? "https://hablia-api.artmedinas.workers.dev/v1").replace(/\/v1\/?$/, "") + "/widget.js";
+const WIDGET_SRC = (((import.meta as any).env?.VITE_API_URL as string | undefined) ?? "https://habliamos-api.artmedinas.workers.dev/v1").replace(/\/v1\/?$/, "") + "/widget.js";
 
 export function Integrations() {
   const api = useApi();

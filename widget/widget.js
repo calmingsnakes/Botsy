@@ -5,7 +5,7 @@
   const S = document.currentScript;
   if (!S) return;
   const botId = S.dataset.bot, key = S.dataset.key;
-  const api = (S.dataset.api || "https://hablia-api.artmedinas.workers.dev/v1").replace(/\/$/, "");
+  const api = (S.dataset.api || "https://habliamos-api.artmedinas.workers.dev/v1").replace(/\/$/, "");
   const accent = S.dataset.accent || "#2f2ea8";
   const title = S.dataset.title || "Asistente";
   if (!botId || !key) { console.warn("[hablia] faltan data-bot o data-key"); return; }
@@ -51,7 +51,7 @@
     <div class="hdr"><b>${title}</b><button class="x" aria-label="Cerrar">×</button></div>
     <div class="msgs" aria-live="polite"></div>
     <form class="frm"><textarea rows="1" placeholder="Escribe tu mensaje…" aria-label="Mensaje"></textarea><button type="submit" aria-label="Enviar">➤</button></form>
-    <div class="tag">Con IA · Hablia</div>
+    <div class="tag">Con IA · Habliamos</div>
   </div>`;
 
   const $ = (q) => root.querySelector(q);
